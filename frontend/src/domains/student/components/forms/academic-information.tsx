@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
   Stack,
+  Grid2,
   TextField,
   Typography
 } from '@mui/material';
@@ -31,101 +32,96 @@ export const AcademicInformation = () => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexGrow: 1 }}>
-        <School sx={{ mr: 1 }} />
-        <Typography variant='body1'>Academic Information</Typography>
-      </Box>
-      <Stack sx={{ my: 2 }} spacing={2}>
-        <FormControl size='small' sx={{ width: '150px' }} error={Boolean(errors.class)}>
-          <InputLabel id='class' shrink>
-            Class
-          </InputLabel>
-          <Controller
-            name='class'
-            control={control}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <>
-                <Select
-                  label='Class'
-                  labelId='class'
-                  notched
-                  value={value}
-                  onChange={(event) => onChange(event.target.value)}
-                >
-                  {classes.map(({ name }) => (
-                    <MenuItem value={name} key={name}>
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <FormHelperText>{error?.message}</FormHelperText>
-              </>
-            )}
+  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+    <School sx={{ mr: 1 }} />
+    <Typography variant="body1">Academic Information</Typography>
+  </Box>
+
+  <Grid2 container spacing={2} sx={{ my: 2 }}>
+
+    {/* Class */}
+    <Grid2 size={{ xs: 12, md: 4 }}>
+      <FormControl fullWidth size="small" error={Boolean(errors.class)}>
+        <InputLabel id="class">Class</InputLabel>
+        <Controller
+          name="class"
+          control={control}
+          render={({ field }) => (
+            <Select {...field} label="Class">
+              {classes.map(({ name }) => (
+                <MenuItem key={name} value={name}>
+                  {name}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+        />
+        <FormHelperText>{errors.class?.message}</FormHelperText>
+      </FormControl>
+    </Grid2>
+
+    {/* Section */}
+    <Grid2 size={{ xs: 12, md: 4 }}>
+      <FormControl fullWidth size="small" error={Boolean(errors.section)}>
+        <InputLabel id="section">Section</InputLabel>
+        <Controller
+          name="section"
+          control={control}
+          render={({ field }) => (
+            <Select {...field} label="Section">
+              {isLoading ? (
+                <MenuItem disabled>Loading...</MenuItem>
+              ) : (
+                data?.sections?.map(({ name }) => (
+                  <MenuItem key={name} value={name}>
+                    {name}
+                  </MenuItem>
+                ))
+              )}
+            </Select>
+          )}
+        />
+        <FormHelperText>{errors.section?.message}</FormHelperText>
+      </FormControl>
+    </Grid2>
+
+    {/* Roll */}
+    <Grid2 size={{ xs: 12, md: 4 }}>
+      <TextField
+        {...register('roll')}
+        fullWidth
+        label="Roll"
+        error={Boolean(errors.roll)}
+        helperText={errors.roll?.message}
+        size="small"
+      />
+    </Grid2>
+
+    {/* Admission Date */}
+    <Grid2 size={{ xs: 12, md: 4 }}>
+      <Controller
+        name="admissionDate"
+        control={control}
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
+          <DatePicker
+            label="Admission Date"
+            format={DATE_FORMAT}
+            value={typeof value === 'string' ? parseISO(value) : value}
+            onChange={(newDate) => onChange(newDate)}
+            slotProps={{
+              textField: {
+                fullWidth: true,
+                size: 'small',
+                error: Boolean(error),
+                helperText: error?.message
+              }
+            }}
           />
-        </FormControl>
-        <FormControl size='small' sx={{ width: '150px' }} error={Boolean(errors.section)}>
-          <InputLabel id='class' shrink>
-            Section
-          </InputLabel>
-          <Controller
-            name='section'
-            control={control}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <>
-                <Select
-                  label='Section'
-                  labelId='section'
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
-                  notched
-                >
-                  {isLoading ? (
-                    <>loading...</>
-                  ) : (
-                    data?.sections?.map(({ name }) => (
-                      <MenuItem value={name} key={name}>
-                        {name}
-                      </MenuItem>
-                    ))
-                  )}
-                </Select>
-                <FormHelperText>{error?.message}</FormHelperText>
-              </>
-            )}
-          />
-        </FormControl>
-        <Box>
-          <TextField
-            {...register('roll')}
-            error={Boolean(errors.roll)}
-            helperText={errors.roll?.message}
-            label='Roll'
-            size='small'
-            slotProps={{ inputLabel: { shrink: true } }}
-          />
-        </Box>
-        <Box>
-          <Controller
-            name='admissionDate'
-            control={control}
-            render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <DatePicker
-                label='Admission Date'
-                slotProps={{
-                  textField: {
-                    helperText: error?.message,
-                    size: 'small',
-                    InputLabelProps: { shrink: true }
-                  }
-                }}
-                format={DATE_FORMAT}
-                value={typeof value === 'string' ? parseISO(value) : value}
-                onChange={(value) => onChange(value)}
-              />
-            )}
-          />
-        </Box>
-      </Stack>
-    </>
+        )}
+      />
+    </Grid2>
+
+  </Grid2>
+</>
   );
 };

@@ -8,7 +8,7 @@ const getRoleId = async (roleName) => {
 }
 
 const findAllStudents = async (payload) => {
-    const { name, className, section, roll } = payload;
+    const { name , className, section, roll } = payload || {};
     let query = `
         SELECT
             t1.id,
@@ -38,6 +38,7 @@ const findAllStudents = async (payload) => {
     }
 
     query += ' ORDER BY t1.id';
+    console.log("Query:", query);
 
     const { rows } = await processDBRequest({ query, queryParams });
     return rows;
@@ -49,6 +50,7 @@ const addOrUpdateStudent = async (payload) => {
     const { rows } = await processDBRequest({ query, queryParams });
     return rows[0];
 }
+
 
 const findStudentDetail = async (id) => {
     const query = `

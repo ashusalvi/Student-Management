@@ -403,19 +403,19 @@ npm run test:coverage
 ### Test Structure
 ```javascript
 // Example test
-describe('Student Controller', () => {
-  describe('GET /students', () => {
-    it('should return paginated students', async () => {
-      const response = await request(app)
-        .get('/api/v1/students')
-        .set('Authorization', `Bearer ${token}`)
-        .expect(200);
+// describe('Student Controller', () => {
+//   describe('GET /students', () => {
+//     it('should return paginated students', async () => {
+//       const response = await request(app)
+//         .get('/api/v1/students')
+//         .set('Authorization', `Bearer ${token}`)
+//         .expect(200);
       
-      expect(response.body.data).toBeInstanceOf(Array);
-      expect(response.body.pagination).toBeDefined();
-    });
-  });
-});
+//       expect(response.body.data).toBeInstanceOf(Array);
+//       expect(response.body.pagination).toBeDefined();
+//     });
+//   });
+// });
 ```
 
 ## 🚀 Deployment
